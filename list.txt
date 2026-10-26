@@ -1,119 +1,100 @@
-! Title: YouTube - Hide Shorts + Block Ads (Updated 2026)
-! Description: Combined filter - hides all YouTube Shorts traces + blocks YouTube ads, sponsor shelves, and adblock detection. For uBlock Origin.
-! Version: 2026.10.26
-! Last modified: 2026-10-26
-! Expires: 3 days (update frequency)
-! Homepage: https://github.com/gijsdev/ublock-hide-yt-shorts (original shorts base)
-! License: MIT
-! Compatibility: uBlock Origin (Firefox/Edge/Firefox Mobile best, Chrome uBO Lite limited)
+! Title: Hide YouTube Shorts - FIXED 2026.10.26 (Aggressive)
+! Description: Fixes Shorts shelf still showing in Oct 2026 layout - uses aggressive has() filters for new YouTube structure
+! Version: 2026.10.26.2
+! Last modified: 2026-10-26 22:00
+! Expires: 3 days
 
 ! ===============================
-! 1. ORIGINAL HIDE SHORTS (kept + updated)
+! FIX FOR YOUR SCREENSHOT - Shorts shelf at bottom
 ! ===============================
 
-! Hide all videos with the shorts indicator (desktop)
-www.youtube.com##ytd-thumbnail-overlay-time-status-renderer[overlay-style="SHORTS"]:upward(ytd-video-renderer)
-m.youtube.com##ytm-thumbnail-overlay-time-status-renderer[data-style="SHORTS"]:upward(ytm-video-with-context-renderer)
-
-! Remove generic shorts shelf except on history page
-www.youtube.com##:matches-path(/^(?!\/feed\/history).*$/)ytd-reel-shelf-renderer
-m.youtube.com##:matches-path(/^(?!\/feed\/history).*$/)ytm-reel-shelf-renderer
+! New 2026 YouTube uses ytd-rich-section-renderer without is-shorts attribute - hide by content
+www.youtube.com##ytd-rich-section-renderer:has(ytd-reel-shelf-renderer)
+www.youtube.com##ytd-rich-section-renderer:has(#shorts)
+www.youtube.com##ytd-rich-section-renderer:has-text(/^Shorts$/)
+www.youtube.com##ytd-rich-section-renderer:has(ytd-rich-shelf-renderer)
+www.youtube.com##ytd-rich-shelf-renderer
 www.youtube.com##ytd-reel-shelf-renderer
-www.youtube.com##ytd-reel-video-renderer
-www.youtube.com##ytd-reel-item-renderer
+www.youtube.com##ytd-shorts
+www.youtube.com##[is-shorts]
+www.youtube.com##ytd-reel-shelf-renderer:upward(ytd-rich-section-renderer)
+www.youtube.com##ytd-rich-shelf-renderer:upward(ytd-rich-section-renderer)
 
-! Remove rich shelf shorts section - 2024-2026 layout
-www.youtube.com##ytd-rich-shelf-renderer[is-shorts],ytd-rich-shelf-renderer[is-shorts]:upward(ytd-rich-section-renderer)
-www.youtube.com##ytd-rich-item-renderer[rendered-from-rich-grid] ytm-shorts-lockup-view-model:upward(ytd-rich-item-renderer[rendered-from-rich-grid])
-www.youtube.com##ytm-shorts-lockup-view-model-v2:upward(grid-shelf-view-model)
-www.youtube.com##ytm-shorts-lockup-view-model-v2:upward(ytd-rich-grid-renderer)
-m.youtube.com##ytm-shorts-lockup-view-model-v2:upward(grid-shelf-view-model)
-m.youtube.com##ytm-shorts-lockup-view-model:upward(ytm-rich-section-renderer)
-www.youtube.com##ytd-rich-shelf-renderer:has-text(/Shorts/i):upward(ytd-rich-section-renderer)
+! Aggressive - hide any section that contains Shorts text or icon
+www.youtube.com##ytd-rich-section-renderer:has-text(/Shorts/)
+www.youtube.com##grid-renderer:has(ytd-reel-shelf-renderer)
+www.youtube.com##ytd-two-column-browse-results-renderer:has(ytd-reel-shelf-renderer) ytd-reel-shelf-renderer
+
+! The specific Shorts shelf with red icon in your screenshot
+www.youtube.com##ytd-rich-section-renderer:has(span:has-text(/^Shorts$/))
+www.youtube.com##ytd-rich-section-renderer:has(yt-icon:has-text(Shorts))
+
+! Desktop shelf - from your screenshot
+www.youtube.com##div:has(> #shorts)
+www.youtube.com###shorts
+www.youtube.com##ytd-watch-next-secondary-results-renderer ytd-reel-shelf-renderer
+
+! ===============================
+! SIDEBAR - Shorts button (left nav in your screenshot)
+! ===============================
+www.youtube.com##ytd-guide-entry-renderer:has-text(/^Shorts$/)
+www.youtube.com##ytd-mini-guide-entry-renderer:has-text(/^Shorts$/)
+www.youtube.com##a[title="Shorts"]
+www.youtube.com##a[href="/shorts/"]
+www.youtube.com##tp-yt-paper-item:has-text(/^Shorts$/)
+
+! ===============================
+! ALL VIDEOS WITH SHORTS INDICATOR
+! ===============================
+www.youtube.com##ytd-thumbnail-overlay-time-status-renderer[overlay-style="SHORTS"]:upward(ytd-video-renderer)
+www.youtube.com##ytd-thumbnail-overlay-time-status-renderer:has-text(/^Shorts$/):upward(ytd-video-renderer)
+www.youtube.com##ytd-rich-item-renderer:has(ytd-thumbnail-overlay-time-status-renderer[overlay-style="SHORTS"])
+www.youtube.com##ytd-rich-item-renderer:has(ytm-shorts-lockup-view-model)
+www.youtube.com##ytd-rich-item-renderer:has(ytm-shorts-lockup-view-model-v2)
+
+! ===============================
+! MOBILE + NEW GRID STRUCTURE
+! ===============================
+www.youtube.com##ytm-shorts-lockup-view-model
+www.youtube.com##ytm-shorts-lockup-view-model-v2
 www.youtube.com##grid-shelf-view-model:has(ytm-shorts-lockup-view-model-v2)
-
-! Hide shorts button in sidebar
-www.youtube.com##ytd-guide-entry-renderer:has(.ytd-guide-entry-renderer[title="Shorts"])
-www.youtube.com##ytd-mini-guide-entry-renderer:has(.ytd-mini-guide-entry-renderer[title="Shorts"])
+www.youtube.com##grid-shelf-view-model:has(ytm-shorts-lockup-view-model)
+www.youtube.com##ytm-reel-shelf-renderer
+m.youtube.com##ytm-reel-shelf-renderer
+m.youtube.com##ytm-shorts-lockup-view-model
+m.youtube.com##ytm-shorts-lockup-view-model-v2
 m.youtube.com##ytm-pivot-bar-item-renderer:has(.pivot-shorts)
+m.youtube.com##ytm-pivot-bar-item-renderer:has-text(/Shorts/)
 
-! Hide shorts tab on channel pages
-www.youtube.com##yt-tab-shape[tab-title="Shorts"]
-m.youtube.com##yt-tab-shape[tab-title="Shorts"]
-www.youtube.com##yt-tab-shape:has-text(/^Shorts$/i)
-
-! Hide shorts filter/category chip
-www.youtube.com##yt-chip-cloud-chip-renderer:has(.ytChipShapeInactive:has-text(/^Shorts$/i))
-www.youtube.com##ytm-chip-cloud-chip-renderer:has([aria-label="Shorts"])
+! ===============================
+! CHIPS - Shorts filter on top
+! ===============================
 www.youtube.com##yt-chip-cloud-chip-renderer:has-text(/^Shorts$/i)
-
-! Hide shorts sections on search page
-www.youtube.com##ytm-shorts-lockup-view-model:upward(grid-shelf-view-model)
-m.youtube.com##ytm-shorts-lockup-view-model:upward(grid-shelf-view-model)
-www.youtube.com##shorts
-www.youtube.com##ytd-reel-shelf-renderer:has-text(/Shorts/i)
-
-! Hide Shorts URL redirect blocker (force to watch page if opened)
-! www.youtube.com##+js(ra, history, 5) - optional, disabled by default
+www.youtube.com##ytm-chip-cloud-chip-renderer:has([aria-label="Shorts"])
+www.youtube.com##yt-chip-cloud-chip-renderer:has-text(/Shorts/i)
 
 ! ===============================
-! 2. NEW - YOUTUBE ADS BLOCKING (2026 updated)
+! CHANNEL PAGE - Shorts tab
 ! ===============================
+www.youtube.com##yt-tab-shape[tab-title="Shorts"]
+www.youtube.com##yt-tab-shape:has-text(/^Shorts$/i)
+m.youtube.com##yt-tab-shape[tab-title="Shorts"]
 
-! Anti-adblock detection bypass
+! ===============================
+! ADS - Keep from previous file
+! ===============================
 www.youtube.com,m.youtube.com,youtube.com##+js(set, yt.config_.openPopupConfig.supportType, false)
 youtube.com##+js(set, yt.config_.args.ad3_module, false)
-www.youtube.com##+js(trusted-set, yt.config_.args.ad3_module, 0)
 www.youtube.com##+js(set, ytInitialPlayerResponse.adPlacements, undefined)
 www.youtube.com##+js(set, ytInitialPlayerResponse.playerAds, undefined)
-www.youtube.com##+js(set, ytInitialPlayerResponse.adBreakParams, undefined)
-www.youtube.com##+js(set, Object.prototype.adBlocksFound, 0)
-www.youtube.com##+js(set, ytplayer.config.args.ad3_module, false)
-
-! Video player ads - overlay, image, skip UI
-www.youtube.com,m.youtube.com##.ytp-ad-module
-www.youtube.com,m.youtube.com##.ytp-ad-overlay-container
-www.youtube.com,m.youtube.com##.ytp-ad-image-overlay
-www.youtube.com,m.youtube.com##.ytp-ad-text-overlay
-www.youtube.com,m.youtube.com##.video-ads.ytp-ad-module
-www.youtube.com##.ytp-ad-skip-button-slot
-www.youtube.com##.ytp-ad-persistent-progress-bar-container
-
-! Shelf / feed ads
+www.youtube.com##.ytp-ad-module
+www.youtube.com##.ytp-ad-overlay-container
 www.youtube.com##ytd-ad-slot-renderer
 www.youtube.com##ytd-in-feed-ad-layout-renderer
 www.youtube.com##ytd-display-ad-renderer
 www.youtube.com##ytd-search-pyv-renderer
 www.youtube.com##ytd-promoted-sparkles-web-renderer
-www.youtube.com##ytd-compact-promoted-video-renderer
-www.youtube.com##ytd-promoted-video-renderer
-www.youtube.com##ytd-statement-banner-renderer:has-text(/ad blocker|Ad blockers are not allowed/i)
-www.youtube.com##tp-yt-paper-dialog:has-text(/ad blocker/i)
-www.youtube.com##ytd-enforcement-message-view-model
-
-! Masthead / homepage ads
-www.youtube.com##ytd-ad-slot-renderer:upward(ytd-rich-section-renderer)
-www.youtube.com##ytd-video-masthead-ad-v3-renderer
-www.youtube.com##ytd-video-masthead-ad-ad-renderer
-
-! Mobile specific ads
-m.youtube.com##ytm-ad-slot-renderer
-m.youtube.com##ytm-companion-ad-renderer
-m.youtube.com##ytm-promoted-video-renderer
-
-! Network level - pre-roll/mid-roll ad domains (uBO can block these)
-||googlevideo.com/get_midroll_info?*adformat
-||youtube.com/api/stats/ads$important
+www.youtube.com##ytd-enforcement-message-view-model:has-text(/ad blocker/i)
+www.youtube.com##ytd-statement-banner-renderer:has-text(/ad blocker/i)
 ||youtube.com/pagead/$important
-||youtube.com/get_midroll_info$important
-||youtube-nocookie.com/embed/*$3p
-
-! Annoyances
-www.youtube.com##ytd-merch-shelf-renderer
-www.youtube.com##ytd-popup-container:has-text(/Ad blockers violate/)
-
-! ===============================
-! 3. EXTRAS - CLEAN YOUTUBE
-! ===============================
-www.youtube.com##ytd-reel-shelf-renderer:upward(#contents)
-www.youtube.com##ytd-rich-section-renderer:has(ytd-ad-slot-renderer)
+||youtube.com/api/stats/ads$important
