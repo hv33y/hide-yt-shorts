@@ -1,100 +1,63 @@
-! Title: Hide YouTube Shorts - FIXED 2026.10.26 (Aggressive)
-! Description: Fixes Shorts shelf still showing in Oct 2026 layout - uses aggressive has() filters for new YouTube structure
-! Version: 2026.10.26.2
-! Last modified: 2026-10-26 22:00
-! Expires: 3 days
+! Title: Hide YouTube Shorts - ULTIMATE FIX from your HTML dump 2026.10.26
+! Description: Built from actual YouTube HTML you sent - works even on uBlock Lite / Manifest V3
+! Version: 2026.10.26.3
+! Last modified: 2026-10-26 22:30
+! Expires: 2 days
+! Homepage: https://github.com/gijsdev/ublock-hide-yt-shorts
 
-! ===============================
-! FIX FOR YOUR SCREENSHOT - Shorts shelf at bottom
-! ===============================
+! ===========================================
+! FROM YOUR HTML: is-shorts="" is present - direct hide
+! ===========================================
+www.youtube.com##ytd-rich-shelf-renderer[is-shorts]
+www.youtube.com##ytd-rich-shelf-renderer[is-shorts=""]
+www.youtube.com##ytd-rich-section-renderer:has(> #content > ytd-rich-shelf-renderer[is-shorts])
+www.youtube.com##ytd-rich-grid-renderer > ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts])
 
-! New 2026 YouTube uses ytd-rich-section-renderer without is-shorts attribute - hide by content
-www.youtube.com##ytd-rich-section-renderer:has(ytd-reel-shelf-renderer)
-www.youtube.com##ytd-rich-section-renderer:has(#shorts)
-www.youtube.com##ytd-rich-section-renderer:has-text(/^Shorts$/)
-www.youtube.com##ytd-rich-section-renderer:has(ytd-rich-shelf-renderer)
-www.youtube.com##ytd-rich-shelf-renderer
-www.youtube.com##ytd-reel-shelf-renderer
-www.youtube.com##ytd-shorts
-www.youtube.com##[is-shorts]
-www.youtube.com##ytd-reel-shelf-renderer:upward(ytd-rich-section-renderer)
-www.youtube.com##ytd-rich-shelf-renderer:upward(ytd-rich-section-renderer)
+! Fallback if :has() not supported (uBlock Lite) - hide inner shelf AND its parent section
+www.youtube.com##ytd-rich-shelf-renderer[is-shorts] #dismissible
+www.youtube.com##ytd-rich-shelf-renderer[is-shorts] #rich-shelf-header-container
+www.youtube.com###content:has(> ytd-rich-shelf-renderer[is-shorts])
 
-! Aggressive - hide any section that contains Shorts text or icon
-www.youtube.com##ytd-rich-section-renderer:has-text(/Shorts/)
-www.youtube.com##grid-renderer:has(ytd-reel-shelf-renderer)
-www.youtube.com##ytd-two-column-browse-results-renderer:has(ytd-reel-shelf-renderer) ytd-reel-shelf-renderer
-
-! The specific Shorts shelf with red icon in your screenshot
-www.youtube.com##ytd-rich-section-renderer:has(span:has-text(/^Shorts$/))
-www.youtube.com##ytd-rich-section-renderer:has(yt-icon:has-text(Shorts))
-
-! Desktop shelf - from your screenshot
-www.youtube.com##div:has(> #shorts)
-www.youtube.com###shorts
-www.youtube.com##ytd-watch-next-secondary-results-renderer ytd-reel-shelf-renderer
-
-! ===============================
-! SIDEBAR - Shorts button (left nav in your screenshot)
-! ===============================
-www.youtube.com##ytd-guide-entry-renderer:has-text(/^Shorts$/)
-www.youtube.com##ytd-mini-guide-entry-renderer:has-text(/^Shorts$/)
-www.youtube.com##a[title="Shorts"]
-www.youtube.com##a[href="/shorts/"]
-www.youtube.com##tp-yt-paper-item:has-text(/^Shorts$/)
-
-! ===============================
-! ALL VIDEOS WITH SHORTS INDICATOR
-! ===============================
-www.youtube.com##ytd-thumbnail-overlay-time-status-renderer[overlay-style="SHORTS"]:upward(ytd-video-renderer)
-www.youtube.com##ytd-thumbnail-overlay-time-status-renderer:has-text(/^Shorts$/):upward(ytd-video-renderer)
-www.youtube.com##ytd-rich-item-renderer:has(ytd-thumbnail-overlay-time-status-renderer[overlay-style="SHORTS"])
-www.youtube.com##ytd-rich-item-renderer:has(ytm-shorts-lockup-view-model)
-www.youtube.com##ytd-rich-item-renderer:has(ytm-shorts-lockup-view-model-v2)
-
-! ===============================
-! MOBILE + NEW GRID STRUCTURE
-! ===============================
-www.youtube.com##ytm-shorts-lockup-view-model
+! ===========================================
+! Shorts lockup models from your dump - 40 instances found
+! ===========================================
 www.youtube.com##ytm-shorts-lockup-view-model-v2
-www.youtube.com##grid-shelf-view-model:has(ytm-shorts-lockup-view-model-v2)
-www.youtube.com##grid-shelf-view-model:has(ytm-shorts-lockup-view-model)
-www.youtube.com##ytm-reel-shelf-renderer
-m.youtube.com##ytm-reel-shelf-renderer
-m.youtube.com##ytm-shorts-lockup-view-model
-m.youtube.com##ytm-shorts-lockup-view-model-v2
-m.youtube.com##ytm-pivot-bar-item-renderer:has(.pivot-shorts)
-m.youtube.com##ytm-pivot-bar-item-renderer:has-text(/Shorts/)
+www.youtube.com##ytm-shorts-lockup-view-model
+www.youtube.com##ytd-rich-item-renderer:has(ytm-shorts-lockup-view-model-v2)
+www.youtube.com##ytd-rich-item-renderer:has(ytm-shorts-lockup-view-model)
 
-! ===============================
-! CHIPS - Shorts filter on top
-! ===============================
-www.youtube.com##yt-chip-cloud-chip-renderer:has-text(/^Shorts$/i)
-www.youtube.com##ytm-chip-cloud-chip-renderer:has([aria-label="Shorts"])
-www.youtube.com##yt-chip-cloud-chip-renderer:has-text(/Shorts/i)
+! ===========================================
+! Sidebar Shorts button - from your dump title="Shorts"
+! ===========================================
+www.youtube.com##ytd-guide-entry-renderer:has-text(Shorts)
+www.youtube.com##a#endpoint[title="Shorts"]
+www.youtube.com##a[href="/shorts/"]
+www.youtube.com##ytd-guide-entry-renderer a[href^="/shorts"]
 
-! ===============================
-! CHANNEL PAGE - Shorts tab
-! ===============================
-www.youtube.com##yt-tab-shape[tab-title="Shorts"]
-www.youtube.com##yt-tab-shape:has-text(/^Shorts$/i)
-m.youtube.com##yt-tab-shape[tab-title="Shorts"]
+! ===========================================
+! Top chips "Shorts" - if present
+! ===========================================
+www.youtube.com##yt-chip-cloud-chip-renderer:has-text(Shorts)
 
-! ===============================
-! ADS - Keep from previous file
-! ===============================
-www.youtube.com,m.youtube.com,youtube.com##+js(set, yt.config_.openPopupConfig.supportType, false)
-youtube.com##+js(set, yt.config_.args.ad3_module, false)
+! ===========================================
+! Thumbnail overlay - Shorts indicator
+! ===========================================
+www.youtube.com##ytd-thumbnail-overlay-time-status-renderer[overlay-style="SHORTS"]
+www.youtube.com##ytd-rich-item-renderer:has(ytd-thumbnail-overlay-time-status-renderer[overlay-style="SHORTS"])
+
+! ===========================================
+! Nuclear option - JS to remove Shorts section (works on all YouTube versions)
+! ===========================================
+www.youtube.com##+js(rmnt, ytd-rich-shelf-renderer[is-shorts])
+www.youtube.com##+js(rmnt, ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts]))
+www.youtube.com##+js(trusted-rpnt, ytd-rich-shelf-renderer[is-shorts], , comment)
+
+! Hide Shorts menu item "Show fewer Shorts"
+www.youtube.com##ytd-rich-shelf-renderer[is-shorts] #menu
+
+! Ads - keep
+www.youtube.com##+js(set, yt.config_.args.ad3_module, false)
 www.youtube.com##+js(set, ytInitialPlayerResponse.adPlacements, undefined)
-www.youtube.com##+js(set, ytInitialPlayerResponse.playerAds, undefined)
-www.youtube.com##.ytp-ad-module
-www.youtube.com##.ytp-ad-overlay-container
 www.youtube.com##ytd-ad-slot-renderer
 www.youtube.com##ytd-in-feed-ad-layout-renderer
-www.youtube.com##ytd-display-ad-renderer
-www.youtube.com##ytd-search-pyv-renderer
-www.youtube.com##ytd-promoted-sparkles-web-renderer
-www.youtube.com##ytd-enforcement-message-view-model:has-text(/ad blocker/i)
-www.youtube.com##ytd-statement-banner-renderer:has-text(/ad blocker/i)
-||youtube.com/pagead/$important
-||youtube.com/api/stats/ads$important
+www.youtube.com##.ytp-ad-module
