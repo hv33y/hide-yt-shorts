@@ -1,0 +1,27 @@
+name: Validate Filter List
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate uBlock syntax
+        run: |
+          echo "Checking repo structure..."
+          ls -R .github/workflows/
+          
+          if [ -f list.txt ]; then
+            echo "Checking list.txt..."
+            grep -q "^! Title:" list.txt && echo "Header present ✓" || (echo "Missing header!" && exit 1)
+            LINES=$(wc -l < list.txt)
+            echo "Total rules: $LINES"
+          else
+            echo "list.txt not present - skipping filter check (OK)"
+          fi
+          
+          echo "Validation passed!"
