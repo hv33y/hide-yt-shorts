@@ -1,63 +1,8 @@
-! Title: Hide YouTube Shorts - ULTIMATE FIX from your HTML dump 2026.10.26
-! Description: Built from actual YouTube HTML you sent - works even on uBlock Lite / Manifest V3
-! Version: 2026.10.26.3
-! Last modified: 2026-10-26 22:30
-! Expires: 2 days
 ! Homepage: https://github.com/gijsdev/ublock-hide-yt-shorts
-
-! ===========================================
-! FROM YOUR HTML: is-shorts="" is present - direct hide
-! ===========================================
-www.youtube.com##ytd-rich-shelf-renderer[is-shorts]
-www.youtube.com##ytd-rich-shelf-renderer[is-shorts=""]
-www.youtube.com##ytd-rich-section-renderer:has(> #content > ytd-rich-shelf-renderer[is-shorts])
-www.youtube.com##ytd-rich-grid-renderer > ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts])
-
-! Fallback if :has() not supported (uBlock Lite) - hide inner shelf AND its parent section
-www.youtube.com##ytd-rich-shelf-renderer[is-shorts] #dismissible
-www.youtube.com##ytd-rich-shelf-renderer[is-shorts] #rich-shelf-header-container
-www.youtube.com###content:has(> ytd-rich-shelf-renderer[is-shorts])
-
-! ===========================================
-! Shorts lockup models from your dump - 40 instances found
-! ===========================================
-www.youtube.com##ytm-shorts-lockup-view-model-v2
-www.youtube.com##ytm-shorts-lockup-view-model
-www.youtube.com##ytd-rich-item-renderer:has(ytm-shorts-lockup-view-model-v2)
-www.youtube.com##ytd-rich-item-renderer:has(ytm-shorts-lockup-view-model)
-
-! ===========================================
-! Sidebar Shorts button - from your dump title="Shorts"
-! ===========================================
-www.youtube.com##ytd-guide-entry-renderer:has-text(Shorts)
-www.youtube.com##a#endpoint[title="Shorts"]
-www.youtube.com##a[href="/shorts/"]
-www.youtube.com##ytd-guide-entry-renderer a[href^="/shorts"]
-
-! ===========================================
-! Top chips "Shorts" - if present
-! ===========================================
-www.youtube.com##yt-chip-cloud-chip-renderer:has-text(Shorts)
-
-! ===========================================
-! Thumbnail overlay - Shorts indicator
-! ===========================================
-www.youtube.com##ytd-thumbnail-overlay-time-status-renderer[overlay-style="SHORTS"]
-www.youtube.com##ytd-rich-item-renderer:has(ytd-thumbnail-overlay-time-status-renderer[overlay-style="SHORTS"])
-
-! ===========================================
-! Nuclear option - JS to remove Shorts section (works on all YouTube versions)
-! ===========================================
 www.youtube.com##+js(rmnt, ytd-rich-shelf-renderer[is-shorts])
 www.youtube.com##+js(rmnt, ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts]))
-www.youtube.com##+js(trusted-rpnt, ytd-rich-shelf-renderer[is-shorts], , comment)
-
-! Hide Shorts menu item "Show fewer Shorts"
-www.youtube.com##ytd-rich-shelf-renderer[is-shorts] #menu
-
-! Ads - keep
-www.youtube.com##+js(set, yt.config_.args.ad3_module, false)
-www.youtube.com##+js(set, ytInitialPlayerResponse.adPlacements, undefined)
-www.youtube.com##ytd-ad-slot-renderer
-www.youtube.com##ytd-in-feed-ad-layout-renderer
-www.youtube.com##.ytp-ad-module
+www.youtube.com##+js(ra, ytd-rich-shelf-renderer[is-shorts])
+www.youtube.com##+js(ra, ytd-rich-shelf-renderer #dismissible:has(#title:text(Shorts)))
+! Fallback cosmetic if JS disabled
+www.youtube.com##ytd-rich-shelf-renderer[is-shorts]:style(display: none !important)
+www.youtube.com##ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts]):style(display: none !important)
