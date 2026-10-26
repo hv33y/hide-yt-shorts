@@ -1,8 +1,47 @@
-! Homepage: https://github.com/gijsdev/ublock-hide-yt-shorts
+! Title: Hide YouTube Shorts - Ultimate Fix (2026) @hv33y
+! Description: Removes all YouTube Shorts shelves, buttons, and lockups - built from real YouTube DOM dump Oct 2026. Works on uBlock Origin + Lite.
+! Version: 2026.10.26.4
+! Last modified: 2026-10-26 22:50
+! Homepage: https://github.com/hv33y/hide-yt-shorts
+! License: MIT
+
+! --- NUCLEAR SHORTS REMOVAL - removes from DOM ---
 www.youtube.com##+js(rmnt, ytd-rich-shelf-renderer[is-shorts])
 www.youtube.com##+js(rmnt, ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts]))
 www.youtube.com##+js(ra, ytd-rich-shelf-renderer[is-shorts])
 www.youtube.com##+js(ra, ytd-rich-shelf-renderer #dismissible:has(#title:text(Shorts)))
-! Fallback cosmetic if JS disabled
+
+! Fallback cosmetic - hide if JS disabled
 www.youtube.com##ytd-rich-shelf-renderer[is-shorts]:style(display: none !important)
 www.youtube.com##ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts]):style(display: none !important)
+www.youtube.com##ytd-rich-shelf-renderer[is-shorts]
+www.youtube.com##ytd-rich-shelf-renderer[is-shorts=""]
+
+! Shorts lockup models
+www.youtube.com##ytm-shorts-lockup-view-model-v2
+www.youtube.com##ytm-shorts-lockup-view-model
+www.youtube.com##ytd-rich-item-renderer:has(ytm-shorts-lockup-view-model-v2)
+www.youtube.com##ytd-rich-item-renderer:has(ytm-shorts-lockup-view-model)
+
+! Sidebar Shorts button
+www.youtube.com##ytd-guide-entry-renderer:has-text(Shorts)
+www.youtube.com##a[title="Shorts"]
+www.youtube.com##a[href="/shorts/"]
+
+! Top chips
+www.youtube.com##yt-chip-cloud-chip-renderer:has-text(Shorts)
+
+! Thumbnail overlay
+www.youtube.com##ytd-thumbnail-overlay-time-status-renderer[overlay-style="SHORTS"]
+
+! Mobile
+m.youtube.com##ytm-reel-shelf-renderer
+m.youtube.com##ytm-shorts-lockup-view-model-v2
+m.youtube.com##ytm-pivot-bar-item-renderer:has-text(Shorts)
+
+! Ads - minimal
+www.youtube.com##+js(set, yt.config_.args.ad3_module, false)
+www.youtube.com##+js(set, ytInitialPlayerResponse.adPlacements, undefined)
+www.youtube.com##ytd-ad-slot-renderer
+www.youtube.com##ytd-in-feed-ad-layout-renderer
+www.youtube.com##.ytp-ad-module
