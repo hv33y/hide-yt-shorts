@@ -9,7 +9,10 @@ This filter list does two things:
 ### Install (uBlock Origin)
 
 **URL install (recommended):**
-1. Copy raw URL to your `list.txt`: `https://raw.githubusercontent.com/hv33y/hide-yt-shorts/refs/heads/master/list.txt`
+1. Copy raw URL to your `list.txt`:
+```
+https://raw.githubusercontent.com/hv33y/hide-yt-shorts/refs/heads/master/list.txt
+```
 2. uBlock Origin Dashboard > Filter lists > scroll down > Import > paste URL > Apply
 
 **Manual:**
