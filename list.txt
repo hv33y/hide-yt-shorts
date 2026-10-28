@@ -1,7 +1,7 @@
 ! Title: Hide YouTube Shorts - Ultimate Fix (2026) @hv33y
 ! Description: Removes all YouTube Shorts shelves, buttons, and lockups - built from real YouTube DOM dump Oct 2026. Works on uBlock Origin + Lite.
-! Version: 2026.10.26
-! Last modified: 2026-10-26 22:44
+! Version: 2026.10.28
+! Last modified: 2026-10-28 08:40
 ! Homepage: https://github.com/hv33y/hide-yt-shorts
 ! License: MIT
 
